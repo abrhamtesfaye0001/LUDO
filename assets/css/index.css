@@ -170,12 +170,6 @@
 
 #dice{/* todo*/
     position: absolute;
-    background:black url("../images/4.png");
-    width: 50px;
-    height: 50px;
-    background-size: 50px;
-    top: 300px;
-    left: 360px;
     opacity: 0.5;
     border: black 0.2px solid;
 }
