@@ -139,7 +139,9 @@
     border-top: solid 1px green;
  }
 
- #rgby{
+ 
+ 
+  #rgby{
     background: url("../images/rgby.png"); 
     background-size: 40px;
     border-bottom: solid 1px yellow;
@@ -170,8 +172,14 @@
 
 #dice{/* todo*/
     position: absolute;
-    opacity: 0.5;
-    border: black 0.2px solid;
+    /* opacity: 0.8; */
+    /* border: black 0px solid; */
+    /* background-color: gray; */
+}
+#diceImg{
+    width: 40px;
+    /* box-shadow: 5px 5px gray ; */
+    border-radius: 5px;
 }
 
 
@@ -251,7 +259,8 @@
 
 
 @media (max-width:500px){
-    #rg,#rb,#gy,#by,#rgby{
+    /* #rg,#rb,#gy,#by,#rgby{ */
+        #rg,#rb,#gy,#by{
         background-size: 21px;
         padding: 0;
         margin: 0;

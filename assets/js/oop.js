@@ -1,457 +1,73 @@
-
-class piece{
-    constructor(id,station,path){
+class Piece {
+    constructor(id, station) {
         this.id = id;
-        this.station  = station;
-        this.active = false;
-        this.atStation = true;
-        this.color = this.Color();
-        // this.path = this.Path;
+        this.station = station;
         this.cell = station;
 
-        this.path = greenPath;
-        // console.log(greenPath);
-        // this.path = ()=>{return this.Path()};
-        // console.log(this.path);
-
-        this.binary = 0;// control 0 or 1
-
-        // this.paths = {"blue":bluePath,"green":greenPath,"red":redPath,"yellow":yellowPath};
-        // this.path = this.paths[this.color];
-        // console.log(this.id);
-    }
-
-    setParentCell(id){
-        this.cell = id;
-    }
-    DOM(){
-        return document.querySelector(this.id);
-    }
-    
-
-    enable(){//able to move using tossvalue
-        this.active = true;
-        var paths = {"blue":bluePath,"green":greenPath,"red":redPath,"yellow":yellowPath};
-        var x = greenPath;
-        
-        piece.hop(this,greenPath[0]);
-        this.cell = greenPath[0];
-        this.atStation = false;
-        console.log("enable");
-        
-
-    }
-
-    disable(){// unable to move
         this.active = false;
+        this.atStation = true;
+
+        this.color = this.getColor();
+        this.path = this.getPath();// array of cells
+        window.setTimeout(() => { this.dom = this.getDom(); }, 1);
+        window.addEventListener("resize", () => { this.reAllocate(); });
+        window.addEventListener("load", () => { this.reAllocate(); });
+
+
+        // var domPromise = new Promise((resolve,reject)=>{
+        //     resolve(this.dom = this.getDom());
+        // });
+
+        // domPromise.then(response=>{
+        //     window.addEventListener("resize", () => { this.reAllocate(); });
+        //     window.addEventListener("load", () => { this.reAllocate(); });
+        // })
+
+
+
+
+
     }
 
-    
-    setActive(tossValue){
-            const once = {once:true};
-            
-            if (tossValue == 6 && this.station == this.cell && this.atStation==true){
-                this.DOM().addEventListener("click",this.enable,once); 
-                this.DOM().classList.add("zoomer");
-                // this.enable();
-            }
-            else{
-            var indexOfParentCell = this.path.indexOf(this.cell);
-            
-                
-            if (indexOfParentCell+tossValue < this.path.length){//todo some attention to math
-                this.DOM().addEventListener("click",this.nMove(tossValue),once);
-                
-            }
-            // this.DOM().classList.add("zoomer");
-            // this.binary = 1;
 
-            }
+    getColor() {
+        var colorMap = {
+            "g": "green",
+            "y": "yellow",
+            "r": "red",
+            "b": "blue"
+        };
 
-
-       
-        
-        
-        
-
-        
+        return colorMap[this.id[1]];
     }
-    setInactive(){
-        this.DOM().classList.remove("zoomer");
-        this.binary = 0;
-    }
-
-    reset(){
-        this.hop(this,this.station);
-        this.cell = this.station;
-    }
-    Color(){
-        var dict = {"b":"blue","g":"green","r":"red","y":"yellow"};
-        return dict[this.id[1]];
-    }
-
-    Path(){
-        var paths = {"blue":bluePath,"green":greenPath,"red":redPath,"yellow":yellowPath};
-        this.path =  paths[this.color];
-    }
-    nMove(tossValue){
-        // this.path
-        // this.cell
-        var indexOfParentCell = this.path.indexOf(this.cell);
-        var goalIndex = indexOfParentCell+tossValue+1;
-        var x=indexOfParentCell;
-        for(var i=indexOfParentCell;i<=goalIndex;i++){
-            window.setTimeout(this.hop,i*500,this,this.path[i]);
-            x=i;
+    getPath() {
+        var pathMap = {
+            "red": [r0, a0, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, b0, a12, a13, a14, a15, a16, a17, a18, a19, a20, a21, a22, a23, y0, a24, a25, a26, a27, a28, a29, a30, a31, a32, a33, a34, a35, g0, a36, a37, a38, a39, a40, a41, a42, a43, a44, a45, a46, r1, r2, r3, r4, r5, r6],
+            "green": [g0, a36, a37, a38, a39, a40, a41, a42, a43, a44, a45, a46, a47, r0, a0, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, b0, a12, a13, a14, a15, a16, a17, a18, a19, a20, a21, a22, a23, y0, a24, a25, a26, a27, a28, a29, a30, a31, a32, a33, a34, g1, g2, g3, g4, g5, g6],
+            "blue": [b0, a12, a13, a14, a15, a16, a17, a18, a19, a20, a21, a22, a23, y0, a24, a25, a26, a27, a28, a29, a30, a31, a32, a33, a34, a35, g0, a36, a37, a38, a39, a40, a41, a42, a43, a44, a45, a46, a47, r0, a0, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, b1, b2, b3, b4, b5, b6],
+            "yellow": [y0, a24, a25, a26, a27, a28, a29, a30, a31, a32, a33, a34, a35, g0, a36, a37, a38, a39, a40, a41, a42, a43, a44, a45, a46, a47, r0, a0, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, b0, a12, a13, a14, a15, a16, a17, a18, a19, a20, a21, a22, y1, y2, y3, y4, y5, y6]
         }
-        this.setParentCell(this.path[x]);
-        //todo append the piece to the cell object
-
-
-        }
-    // hop(piece,destinationCell){
-    static hop(piece,destinationCell){
-        try {
-            
-        var currPiece = document.querySelector(piece.id);
-        var dest = document.querySelector(destinationCell.id);
-        
-        destTop = dest.getBoundingClientRect().top;
-        destLeft = dest.getBoundingClientRect().left;
-    
-        destWidth = dest.getBoundingClientRect().width;
-    
-        pieceWIdth = currPiece.getBoundingClientRect().width;
-    
-        y = destTop + (destWidth-pieceWIdth)/2;
-        x = destLeft + (destWidth-pieceWIdth)/2;
-            switch(eval(piece.id[3])){
-                case 0:
-                    y=y+2+"px";
-                    x=x+0+"px";
-                    break;
-                case 1:
-                    y=y+2+"px";
-                    x=x+2+"px";
-                    break;
-                case 2:
-                    y=y+0+"px";
-                    x=x+0+"px";
-                    break;
-                case 3:
-                    y=y+0+"px";
-                    x=x+2+"px";
-                    break;
-            }
-        currPiece.style.top = y;
-        currPiece.style.left = x;
-        } catch (TypeError) {
-
-            
-        }
-        
+        return pathMap[this.color];
     }
-
-}
-
-class cell {
-    constructor(id, type) {//start,open,gate,homeRun,home
-        this.type = type;
-        this.id = id;
-        this.container = []
-        
-
-    }
-    element(){
+    getDom() {
         return document.querySelector(this.id);
     }
-    addPiece(piece) {
-        if (this.type != "start" && this.isSafe(piece)) {
-            this.container.push(piece);
-            // TODO insert html part of moving
-            
-        }
-        else {
-            for (var i = 0; i < this.container.length; i++) {
-                if (this.container[i].color != piece.color) {
-                    this.container[i].reset();//TODO resets the piece to it's original station
-                    this.container.splice(i, 1);// removes the different piece from the 
-                }
-            }
-        }
+    hop(destinationCell) {
+        // try {
+        console.log(this.id, this.cell.id);
+        var currPiece = this.dom;
+        var dest = destinationCell.dom;
 
-    }
-    isSafe(piece) {
-        if (this.container.length == 0) {
-            return true;
-        }
-        else {
-            for (var i = 0; i < this.container.length; i++) {
-                if (this.container[i].color != piece.color) {
-                    return false;
-                }
+        var destTop = dest.getBoundingClientRect().top;
+        var destLeft = dest.getBoundingClientRect().left;
 
-            }
-            return true;
-        }
-    }
+        var destWidth = dest.getBoundingClientRect().width;
 
+        var pieceWIdth = currPiece.getBoundingClientRect().width;
 
-}
-
-
-a0 = new cell("#a0", "open");
-a1 = new cell("#a1", "open");
-a2 = new cell("#a2", "open");
-a3 = new cell("#a3", "open");
-a4 = new cell("#a4", "open");
-a5 = new cell("#a5", "open");
-a6 = new cell("#a6", "open");
-a7 = new cell("#a7", "open");
-a8 = new cell("#a8", "open");
-a9 = new cell("#a9", "open");
-a10 = new cell("#a10", "open");
-a11 = new cell("#a11", "open");
-a12 = new cell("#a12", "open");
-a13 = new cell("#a13", "open");
-a14 = new cell("#a14", "open");
-a15 = new cell("#a15", "open");
-a16 = new cell("#a16", "open");
-a17 = new cell("#a17", "open");
-a18 = new cell("#a18", "open");
-a19 = new cell("#a19", "open");
-a20 = new cell("#a20", "open");
-a21 = new cell("#a21", "open");
-a22 = new cell("#a22", "open");
-a23 = new cell("#a23", "open");
-a24 = new cell("#a24", "open");
-a25 = new cell("#a25", "open");
-a26 = new cell("#a26", "open");
-a27 = new cell("#a27", "open");
-a28 = new cell("#a28", "open");
-a29 = new cell("#a29", "open");
-a30 = new cell("#a30", "open");
-a31 = new cell("#a31", "open");
-a32 = new cell("#a32", "open");
-a33 = new cell("#a33", "open");
-a34 = new cell("#a34", "open");
-a35 = new cell("#a35", "open");
-a36 = new cell("#a36", "open");
-a37 = new cell("#a37", "open");
-a38 = new cell("#a38", "open");
-a39 = new cell("#a39", "open");
-a40 = new cell("#a40", "open");
-a41 = new cell("#a41", "open");
-a42 = new cell("#a42", "open");
-a43 = new cell("#a43", "open");
-a44 = new cell("#a44", "open");
-a45 = new cell("#a45", "open");
-a46 = new cell("#a46", "open");
-a47 = new cell("#a47", "open");
-
-r0 = new cell("#r0", "start");
-r1 = new cell("#r1", "homeRun");
-r2 = new cell("#r2", "homeRun");
-r3 = new cell("#r3", "homeRun");
-r4 = new cell("#r4", "homeRun");
-r5 = new cell("#r5", "homeRun");
-r6 = new cell("#r6", "home");
-r7 = new cell("#r7", "station");
-r8 = new cell("#r8", "station");
-r9 = new cell("#r9", "station");
-r10 = new cell("#r10", "station");
-
-g0 = new cell("#g0", "start");
-g1 = new cell("#g1", "homeRun");
-g2 = new cell("#g2", "homeRun");
-g3 = new cell("#g3", "homeRun");
-g4 = new cell("#g4", "homeRun");
-g5 = new cell("#g5", "homeRun");
-g6 = new cell("#g6", "home");
-g7 = new cell("#g7", "station");
-g8 = new cell("#g8", "station");
-g9 = new cell("#g9", "station");
-g10 = new cell("#g10", "station");
-
-b0 = new cell("#b0", "start");
-b1 = new cell("#b1", "homeRun");
-b2 = new cell("#b2", "homeRun");
-b3 = new cell("#b3", "homeRun");
-b4 = new cell("#b4", "homeRun");
-b5 = new cell("#b5", "homeRun");
-b6 = new cell("#b6", "home");
-b7 = new cell("#b7", "station");
-b8 = new cell("#b8", "station");
-b9 = new cell("#b9", "station");
-b10 = new cell("#b10", "station");
-
-y0 = new cell("#y0", "start");
-y1 = new cell("#y1", "homeRun");
-y2 = new cell("#y2", "homeRun");
-y3 = new cell("#y3", "homeRun");
-y4 = new cell("#y4", "homeRun");
-y5 = new cell("#y5", "homeRun");
-y6 = new cell("#y6", "home");
-y7 = new cell("#y7", "station");
-y8 = new cell("#y8", "station");
-y9 = new cell("#y9", "station");
-y10 = new cell("#y10", "station");
-
-
-redPath = [r0, a0, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11,b0, a12, a13, a14, a15, a16, a17, a18 ,a19, a20, a21, a22, a23,y0, a24, a25, a26, a27, a28, a29, a30, a31, a32, a33, a34, a35,g0, a36, a37, a38, a39, a40, a41, a42, a43, a44, a45, a46,r1,r2,r3,r4,r5,r6];
-greenPath = [g0, a36, a37, a38, a39, a40, a41, a42, a43, a44, a45, a46, a47,r0, a0, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11,b0, a12, a13, a14, a15, a16, a17, a18 , a19, a20, a21, a22, a23,y0, a24, a25, a26, a27, a28, a29, a30, a31, a32, a33, a34, g1, g2,g3,g4,g5,g6];
-bluePath = [b0, a12, a13, a14, a15, a16, a17, a18 , a19, a20, a21, a22, a23,y0, a24, a25, a26, a27, a28, a29, a30, a31, a32, a33, a34, a35,g0, a36, a37, a38, a39, a40, a41, a42, a43, a44, a45, a46, a47,r0, a0, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10,b1,b2,b3,b4,b5,b6];
-yellowPath = [y0, a24, a25, a26, a27, a28, a29, a30, a31, a32, a33, a34, a35, g0, a36, a37, a38, a39, a40, a41, a42, a43, a44, a45, a46, a47, r0, a0, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, b0, a12, a13, a14, a15, a16, a17, a18 , a19, a20, a21, a22,y1,y2,y3,y4,y5,y6];
-
-
-
-
-
-rp0 =new piece("#rp0",r7,redPath);
-rp1 =new piece("#rp1",r8,redPath);
-rp2 =new piece("#rp2",r9,redPath);
-rp3 =new piece("#rp3",r10,redPath);
-
-
-
-
-
-gp0 =new piece("#gp0",g7,greenPath);
-gp1 =new piece("#gp1",g8,greenPath);
-gp2 =new piece("#gp2",g9,greenPath);
-gp3 =new piece("#gp3",g10,greenPath);
-
-
-
-bp0 =new piece("#bp0",b7,bluePath);
-bp1 =new piece("#bp1",b8,bluePath);
-bp2 =new piece("#bp2",b9,bluePath);
-bp3 =new piece("#bp3",b10,bluePath);
-
-
-yp0 =new piece("#yp0",y7,yellowPath);
-yp1 =new piece("#yp1",y8,yellowPath);
-yp2 =new piece("#yp2",y9,yellowPath);
-yp3 =new piece("#yp3",y10,yellowPath);
-
-
-class board {//TODO each type of piece needs its own cells array
-    constructor() {
-
-
-    }
-
-}
-
-
-class station {
-    constructor(color) {//green,yellow,red,blue
-        this.color = color;
-        this.cells = [];
-
-    }
-    add(cell) {
-        this.cells.push(cell);
-    }
-    remove(cell) {
-        this.cells.remove(cell);
-    }
-
-}
-
-
-
-
-
-
-
-
-// document.querySelector("#gp0").addEventListener("click",myOption);
-
-
-
-
-
-
-
-
-
-
-// function resize() {
-//     center = document.querySelector("#center");
-//     anchor = document.querySelector("#anchor");
-//     center.style.top = anchor.getBoundingClientRect().top + "px";
-//     center.style.left = anchor.getBoundingClientRect().left + "px";
-//     center.style.width = anchor.getBoundingClientRect().width * 3 + 1 + "px";
-// }
-// resize()// resize the center to screen size
-
-
-
-
-
-
-
-
-
-
-
-
-// function move(pieceId, destinationId) {
-//     piece = document.querySelector(pieceId);
-//     origin = document.querySelector("#" + piece.parentNode.id);
-//     destination = document.querySelector(destinationId);
-//     // translate it to new position by the width of the cells
-//     oTop = origin.getBoundingClientRect().top;
-//     oLeft = origin.getBoundingClientRect().left;
-//     oWidth = origin.getBoundingClientRect().width;
-
-
-//     dTop = destination.getBoundingClientRect().top;
-//     dLeft = destination.getBoundingClientRect().left;
-//     dWidth = destination.getBoundingClientRect().width;
-
-
-//     // piece.style.transition = "2s"
-
-//     myTop = Math.sign(dTop - oTop) * oWidth + "px";
-//     myLeft = Math.sign(dLeft - oLeft) * oWidth + "px";
-
-//     piece.style.transform = "translate(" + myLeft + "," + myTop + ")";
-//     // piece.style.transition = "1s";
-//     destination.appendChild(piece);
-
-//     piece.style.transform = "translate(0px,-21px)";
-//     piece.style.transform = "translate(0px,0px)";
-
-//     var x=-22*( piece.parentNode.children.length-1) + "px";
-//     piece.style.transform = "translate(0px,"+x+")";
-
-//     piece.style.top = "0px";
-
-    
-
-
-
-// }
-
-function hop(piece, destinationCell) {
-    try {
-
-        var currPiece = document.querySelector(piece.id);
-        var dest = document.querySelector(destinationCell.id);
-
-        destTop = dest.getBoundingClientRect().top;
-        destLeft = dest.getBoundingClientRect().left;
-
-        destWidth = dest.getBoundingClientRect().width;
-
-        pieceWIdth = currPiece.getBoundingClientRect().width;
-
-        y = destTop + (destWidth - pieceWIdth) / 2;
-        x = destLeft + (destWidth - pieceWIdth) / 2;
-        // console.log("reached gggggggggg");
-        switch (eval(piece.id[3])) {
+        var y = destTop + (destWidth - pieceWIdth) / 2;
+        var x = destLeft + (destWidth - pieceWIdth) / 2;
+        switch (eval(this.id[3])) {// offsets
             case 0:
                 y = y + 2 + "px";
                 x = x + 0 + "px";
@@ -471,71 +87,497 @@ function hop(piece, destinationCell) {
         }
         currPiece.style.top = y;
         currPiece.style.left = x;
-    } catch (TypeError) {
+        // } catch (TypeError) {
+        //     console.log("error");
+        // }
+    }
+    nMove(tossValue) {
+
+        var indexOfParentCell = this.path.indexOf(this.cell);
+        var goalIndex = indexOfParentCell + tossValue + 1;
+        if (this.cell == this.station) {
+
+        }
+        else {
+
+            var i = indexOfParentCell;
+            const sleep = milliseconds => {
+                return new Promise(resolve => setTimeout(resolve, milliseconds));
+
+            };
+
+            var piece = this;
+            function move(i) {
+                if (i == goalIndex) {
+                    piece.path[i - 1].addPiece(piece);
+                }
+                else {
+                    sleep(250).then(() => {
+                        move(i + 1);
+                        piece.hop(piece.path[i]);
+                    })
+                }
+            }
+            move(i);
+        }
+
+    }
+
+    enable() {
+
+        this.active = true;
+        this.hop(this.path[0]);
+        this.atStation = false;
+        this.path[0].addPiece(this);
+    }
+
+    reset() {
+        this.hop(this.station);
+        this.station.addPiece(this);
+    }
+
+    // placeAtStation() {
+    //     this.reset();// todo have some suspision
+    // }
+
+    reAllocate() {
+        var cell = document.querySelector(this.cell.id);
+        var piece = document.querySelector(this.id);
+
+        window.setTimeout(() => {
+            var cellTop = cell.getBoundingClientRect().top;
+            var cellLeft = cell.getBoundingClientRect().left;
+            var cellWidth = cell.getBoundingClientRect().width;
+            var pieceWidth = piece.getBoundingClientRect().width;
+            piece.style.left = 1 + cellLeft + (cellWidth - pieceWidth) / 2 + "px";
+            piece.style.top = 1 + cellTop + (cellWidth - pieceWidth) / 2 + "px";
+        }, 100)
 
 
     }
-    // console.log("reached heare");
 
 }
 
 
-function placeAtStation(){
-    hop(gp0,g7);
-    
-    hop(gp1,g8);
-    hop(gp2,g9);
-    hop(gp3,g10);
 
-    hop(yp0,y7);
-    hop(yp1,y8);
-    hop(yp2,y9);
-    hop(yp3,y10);
+// gp0 = new Piece("#gp0","#g7");
+class Cell {
+    constructor(id, type) {
+        this.type = type;
+        this.id = id;
+        this.container = [];
+        window.setTimeout(() => { this.dom = this.getDom(); }, 25);
+    }
+    getDom() {
+        return document.querySelector(this.id);
+    }
+    addPiece(piece) {
+        piece.cell.removePiece(piece);
+        if (this.isSafeFor(piece)) {
+            this.container.push(piece);
+            piece.cell = this;
 
-    hop(rp0,r7);
-    hop(rp1,r8);
-    hop(rp2,r9);
-    hop(rp3,r10);
+        }
+        else {
+            console.log("not safe");
+            var enemies = this.container;
 
-    hop(bp0,b7);
-    hop(bp1,b8);
-    hop(bp2,b9);
-    hop(bp3,b10);
-    
-    
-    
+            var x = enemies.length;
+
+            for (var y = 0; y < x; y++) {
+                this.container[x - y - 1].reset();////////////////////////// todo edit her
+            }
+            this.container.push(piece);
+            piece.cell = this;
+        }
+
+
+    }
+    removePiece(piece) {
+        this.container.splice(this.container.indexOf(piece), 1);
+    }
+    isSafeFor(piece) {
+        if (this.type == "start" || this.type == "homeRun" || this.type == "home" || this.container.length == 0) {
+            return true;
+        }
+        else {
+            for (var i = 0; i < this.container.length; i++) {
+                if (this.container[i].color != piece.color) {
+                    return false;
+                }
+
+            }
+            return true;
+        }
+    }
+
+
 }
 
+class Player {
+    constructor(name, color) {
+        this.color = color;
+        this.name = name;
 
-///window.onload(window.setTimeout(alertMe,10000));
-try {
-    window.onload(window.setTimeout(placeAtStation,10));
-} catch (TypeError) {
-    
-}
+        this.pieceDict = {
+            "green": [gp0, gp1, gp2, gp3],
+            "yellow": [yp0, yp1, yp2, yp3],
+            "red": [rp0, rp1, rp2, rp3],
+            "blue": [bp0, bp1, bp2, bp3]
+        };
+        this.pieces = this.pieceDict[this.color];
+        console.log(this.pieces[0].id);
+        this.turn = false;
+
+    }
+    setActive(tossValue) {
+        this.pieces.forEach((piece) => {
+            this.addEventListener(piece, tossValue);
+        });
+        // for(var i=0;i<this.pieces.length;i++){
+        //     let piece = this.pieces[i];
+        //     console.log(piece.id);
+        //     if(piece.cell == piece.station && tossValue==6){
+        //         console.log(piece.dom);
+        //         let id = piece.id;
+        //         document.querySelector(id).addEventListener("click",()=>{if(this.turn==true){piece.enable();}});
+        //     }
+        //     else{
+
+        //     }
+        // }
+
+    }
+    addEventListener(piece, tossValue) {
+        if (piece.cell == piece.station && tossValue == 6) {
+            console.log(piece.dom);
+            let id = piece.id;
+            document.querySelector(id).addEventListener("click", () => {
+                if (this.turn == true) {
+                    piece.enable();
+                }
+            });
+        }
+        else {
+            if (piece.cell !== piece.station && tossValue < piece.path.length - piece.path.indexOf(piece.cell)) {
+
+                
+                document.querySelector(piece.id).removeEventListener("click", () => { this.moveToss(piece, tossValue) });
+                document.querySelector(piece.id).addEventListener("click", () => { this.moveToss(piece, tossValue) });
+            }
+
+        }
+    }
+
+    moveToss(piece, tossValue) {
+        if (this.turn == true) {
+            getPiece(piece.id).nMove(tossValue);
+            this.turn = false;
+            // this = new Player(this.name,this.color);
+            var red = new Player("abrham","red");
+            var green = new Player("abrham","green");
+            var blue = new Player("abrham","blue");
+            var yellow = new Player("abrham","yellow");
+        }
+    };
+
+    swapObject(){
+        var red = new Player("abrham","red");
+        var green = new Player("abrham","green");
+        var blue = new Player("abrham","blue");
+        var yellow = new Player("abrham","yellow");
+       var objDict={
+           "red":red,
+           "green":green,
+           "blue":blue,
+           "yellow":yellow
+
+       };
 
 
 
-// window.addEventListener("load",function(){resize()});
-// document.addEventListener("resize",function(){resize();})
-// window.onresize = function(){resize();}
-/*
-
-function d(){
-    for(var i=0;i<10;i++){
-        window.setTimeout(move,i*500,"#gp0","#a"+i);///TODO this shit moves nicely
     }
 }
 
-*/
+
+class Dice {
+    constructor() {
+        this.value = 1;
+        window.setTimeout(() => this.addEventListener(), 100);
+        window.setTimeout(() => { this.dom = document.querySelector("#dice") }, 10);
+
+    }
+
+    sleep(milliseconds) {
+        return new Promise(resolve => setTimeout(resolve, milliseconds));
+
+    };
+    toss() {
+        var min = 1;
+        var max = 6;
+        var tossValue = Math.floor(Math.random() * (max - min + 1)) + min;
+
+        this.value = tossValue;
+        console.log(`random value ${this.value}`);
+        this.display(0);
+        return tossValue;
+    }
+
+    display(index) {
+        var diceImages = [
+            "./assets/images/3.png",
+            "./assets/images/5.png",
+            "./assets/images/1.png",
+            "./assets/images/2.png",
+            "./assets/images/4.png",
+            "./assets/images/6.png"
+        ];
+        var dict = {
+            3: 0,
+            5: 1,
+            1: 2,
+            2: 3,
+            4: 4,
+            6: 5
+        }
+        var i = index;
+        if (i == 6) {
+            var dom = document.querySelector("#diceImg");
+            window.setTimeout(() => { dom.src = diceImages[dict[this.value]]; }, 300);
+
+        }
+        else {
+            this.sleep(300).then(() => {
+                this.display(i + 1)
+                this.changeImg(i);
 
 
-// function enable(piece){//able to move using tossvalue
-//     piece.active = true;
-//     var paths = {"blue":bluePath,"green":greenPath,"red":redPath,"yellow":yellowPath};
-//     var x = greenPath;
-//     hop(piece,x);
-//     piece.cell = piece.path[0];
-//     piece.atStation = false;
+            });
 
+        }
+
+
+
+
+
+    }
+    changeImg(index) {
+        var diceImages = [
+            "./assets/images/3.png",
+            "./assets/images/5.png",
+            "./assets/images/1.png",
+            "./assets/images/2.png",
+            "./assets/images/4.png",
+            "./assets/images/6.png"
+        ];
+
+        var dom = document.querySelector("#diceImg");
+        dom.src = diceImages[index];
+    }
+    addEventListener() {
+        var dom = document.querySelector("#diceImg");
+        dom.addEventListener("click", () => { this.toss() });
+        window.addEventListener("load", () => { this.place() });
+        window.addEventListener("resize", () => { this.place() });
+
+    }
+
+    // place() {
+    //     var dom = a23.dom;
+    //     //   console.log(dom);
+    //     this.dom.style.top = a23.dom.getBoundingClientRect().top + a23.dom.getBoundingClientRect().height + "px";
+    //     this.dom.style.left = a23.dom.getBoundingClientRect().left + a23.dom.getBoundingClientRect().width / 2 + "px";
+    //     this.dom.style.width = a23.dom.getBoundingClientRect().width * 2 + "px";
+    //     document.querySelector("#diceImg").style.width = a23.dom.getBoundingClientRect().width * 2.5 + "px";
+    //     //   console.log(this.dom.style.width);
+    // }
+    place() {
+        var dom = a23.dom;
+        //   console.log(dom);
+        let rgby = document.querySelector("#rgby");
+        this.dom.style.top = rgby.getBoundingClientRect().top+"px";
+        this.dom.style.left = rgby.getBoundingClientRect().left+"px";
+        // this.dom.style.width = a23.dom.getBoundingClientRect().width * 2 + "px";
+        // document.querySelector("#diceImg").style.width = a23.dom.getBoundingClientRect().width * 2.5 + "px";
+        //   console.log(this.dom.style.width);
+    }
+
+}
+
+
+function getPiece(id) {
+    var pieceId = {
+        "#gp0": gp0,
+        "#gp1": gp1,
+        "#gp2": gp2,
+        "#gp3": gp3,
+
+        "#rp0": rp0,
+        "#rp1": rp1,
+        "#rp2": rp2,
+        "#rp3": rp3,
+
+        "#yp0": yp0,
+        "#yp1": yp1,
+        "#yp2": yp2,
+        "#yp3": yp3,
+
+        "#bp0": bp0,
+        "#bp1": bp1,
+        "#bp2": bp2,
+        "#bp3": bp3
+    };
+    return pieceId[id];
+}
+
+
+
+
+
+
+
+
+
+
+a0 = new Cell("#a0", "open");
+a1 = new Cell("#a1", "open");
+a2 = new Cell("#a2", "open");
+a3 = new Cell("#a3", "open");
+a4 = new Cell("#a4", "open");
+a5 = new Cell("#a5", "open");
+a6 = new Cell("#a6", "open");
+a7 = new Cell("#a7", "open");
+a8 = new Cell("#a8", "open");
+a9 = new Cell("#a9", "open");
+a10 = new Cell("#a10", "open");
+a11 = new Cell("#a11", "open");
+a12 = new Cell("#a12", "open");
+a13 = new Cell("#a13", "open");
+a14 = new Cell("#a14", "open");
+a15 = new Cell("#a15", "open");
+a16 = new Cell("#a16", "open");
+a17 = new Cell("#a17", "open");
+a18 = new Cell("#a18", "open");
+a19 = new Cell("#a19", "open");
+a20 = new Cell("#a20", "open");
+a21 = new Cell("#a21", "open");
+a22 = new Cell("#a22", "open");
+a23 = new Cell("#a23", "open");
+a24 = new Cell("#a24", "open");
+a25 = new Cell("#a25", "open");
+a26 = new Cell("#a26", "open");
+a27 = new Cell("#a27", "open");
+a28 = new Cell("#a28", "open");
+a29 = new Cell("#a29", "open");
+a30 = new Cell("#a30", "open");
+a31 = new Cell("#a31", "open");
+a32 = new Cell("#a32", "open");
+a33 = new Cell("#a33", "open");
+a34 = new Cell("#a34", "open");
+a35 = new Cell("#a35", "open");
+a36 = new Cell("#a36", "open");
+a37 = new Cell("#a37", "open");
+a38 = new Cell("#a38", "open");
+a39 = new Cell("#a39", "open");
+a40 = new Cell("#a40", "open");
+a41 = new Cell("#a41", "open");
+a42 = new Cell("#a42", "open");
+a43 = new Cell("#a43", "open");
+a44 = new Cell("#a44", "open");
+a45 = new Cell("#a45", "open");
+a46 = new Cell("#a46", "open");
+a47 = new Cell("#a47", "open");
+
+r0 = new Cell("#r0", "start");
+r1 = new Cell("#r1", "homeRun");
+r2 = new Cell("#r2", "homeRun");
+r3 = new Cell("#r3", "homeRun");
+r4 = new Cell("#r4", "homeRun");
+r5 = new Cell("#r5", "homeRun");
+r6 = new Cell("#r6", "home");
+
+r7 = new Cell("#r7", "station");
+r8 = new Cell("#r8", "station");
+r9 = new Cell("#r9", "station");
+r10 = new Cell("#r10", "station");
+
+g0 = new Cell("#g0", "start");
+g1 = new Cell("#g1", "homeRun");
+g2 = new Cell("#g2", "homeRun");
+g3 = new Cell("#g3", "homeRun");
+g4 = new Cell("#g4", "homeRun");
+g5 = new Cell("#g5", "homeRun");
+g6 = new Cell("#g6", "home");
+
+g7 = new Cell("#g7", "station");
+
+g8 = new Cell("#g8", "station");
+g9 = new Cell("#g9", "station");
+g10 = new Cell("#g10", "station");
+
+b0 = new Cell("#b0", "start");
+b1 = new Cell("#b1", "homeRun");
+b2 = new Cell("#b2", "homeRun");
+b3 = new Cell("#b3", "homeRun");
+b4 = new Cell("#b4", "homeRun");
+b5 = new Cell("#b5", "homeRun");
+b6 = new Cell("#b6", "home");
+b7 = new Cell("#b7", "station");
+b8 = new Cell("#b8", "station");
+b9 = new Cell("#b9", "station");
+b10 = new Cell("#b10", "station");
+
+y0 = new Cell("#y0", "start");
+y1 = new Cell("#y1", "homeRun");
+y2 = new Cell("#y2", "homeRun");
+y3 = new Cell("#y3", "homeRun");
+y4 = new Cell("#y4", "homeRun");
+y5 = new Cell("#y5", "homeRun");
+y6 = new Cell("#y6", "home");
+y7 = new Cell("#y7", "station");
+y8 = new Cell("#y8", "station");
+y9 = new Cell("#y9", "station");
+y10 = new Cell("#y10", "station");
+
+
+rp0 = new Piece("#rp0", r7);
+rp1 = new Piece("#rp1", r8);
+rp2 = new Piece("#rp2", r9);
+rp3 = new Piece("#rp3", r10);
+
+
+
+
+
+gp0 = new Piece("#gp0", g7);
+gp1 = new Piece("#gp1", g8);
+gp2 = new Piece("#gp2", g9);
+gp3 = new Piece("#gp3", g10);
+
+
+
+bp0 = new Piece("#bp0", b7);
+bp1 = new Piece("#bp1", b8);
+bp2 = new Piece("#bp2", b9);
+bp3 = new Piece("#bp3", b10);
+
+
+yp0 = new Piece("#yp0", y7);
+yp1 = new Piece("#yp1", y8);
+yp2 = new Piece("#yp2", y9);
+yp3 = new Piece("#yp3", y10);
+
+
+dice = new Dice();
+
+var red = new Player("abrham","red");
+var green = new Player("abrham","green");
+var blue = new Player("abrham","blue");
+var yellow = new Player("abrham","yellow");
+// function placeAtStation() {
+//     var piecesArray = [rp0, rp1, rp2, rp3, gp0, gp1, gp2, gp3, bp0, bp1, bp2, bp3, yp0, yp1, yp2, yp3];
+//     piecesArray.forEach((piece) => { { if (piece.cell !== piece.station) { } else { piece.placeAtStation(); } } });
 // }
+
+// window.setTimeout(() => placeAtStation(), 105);
+// window.addEventListener("resize", () => placeAtStation());`
