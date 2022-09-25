@@ -1,0 +1,305 @@
+.cell{
+    
+    width:  40px;
+    height: 40px;
+    /* border: solid 1px; */
+    padding: 0;
+    margin: 0;
+}
+.bordered{
+    border: solid 1px black;
+}
+
+
+
+
+
+
+#container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+    width: 100%;
+}
+.col{
+    float: left;
+}
+.piece{
+    width: 25px;
+    padding: 0;
+    margin: 0;
+    position: absolute;
+    margin: auto;
+    top: 10px;
+    left: 10px;
+    
+    
+}
+
+.station{
+    background: url("../images/station.png") no-repeat;
+    background-size: 41px;
+}
+
+.red{
+    background-color: red;
+}
+.green{
+    background-color: green;
+}
+.blue{
+    background-color: blue;
+}
+.yellow{
+    background-color: yellow;
+}
+
+
+
+
+#r6{
+    background: red url("../images/station.png") no-repeat;
+    background-size: 41px;
+}
+#g6{
+    background: green url("../images/station.png") no-repeat;
+    background-size: 41px;
+}
+#b6{
+    background: blue url("../images/station.png") no-repeat;
+    background-size: 41px;
+}
+#y6{
+    background: yellow url("../images/station.png") no-repeat;
+    background-size: 41px;
+}
+
+
+
+/* #center{
+    width: 135px;
+    position: absolute;
+    top: 36%;
+    left: 42%;
+    
+} */
+
+
+#rg{
+   background: url("../images/rg.png"); 
+   background-size: 40px;
+   border-right: solid 1px red;
+   border-bottom: solid 1px #008000;
+}
+#g6{
+    border-bottom: solid 1px #008000;
+    border-top: solid 1px #008000;
+    border-right: solid 1px #008000;
+}
+
+#r6{
+    border-bottom: solid 1px #FF0000;
+    border-left: solid 1px #FF0000;
+    border-right: solid 1px #FF0000;
+}
+
+
+#rb{
+    background: url("../images/rb.png"); 
+    background-size: 41px;
+    border-left: solid 1px red;
+    border-bottom: solid 1px blue;
+ }
+
+ #b6{
+    border-top: solid 1px blue;
+    border-left: solid 1px blue;
+    border-bottom: solid 1px blue;
+ }
+
+ 
+ #by{
+    background: url("../images/by.png"); 
+    background-size: 40px;
+    border-top: solid 1px blue;
+    border-left: solid 1px yellow;
+ }
+
+ #y6{
+    border-top: solid 1px yellow;
+    border-left: solid 1px yellow;
+    border-right: solid 1px yellow;
+ }
+
+ #gy{
+    background: url("../images/gy.png"); 
+    background-size: 40px;
+    border-right: solid 1px yellow;
+    border-top: solid 1px green;
+ }
+
+ 
+ 
+  #rgby{
+    background: url("../images/rgby.png"); 
+    background-size: 40px;
+    border-bottom: solid 1px yellow;
+    border-top: solid 1px red;
+    border-left: solid 1px #008000;
+    border-right: solid 1px blue;
+
+ }
+
+/*
+
+
+
+ #rg{
+    background: url("../images/"); 
+    background-size: 40px;
+ }
+ #rg{
+    background: url("../images/"); 
+    background-size: 40px;
+ }
+
+
+*/
+
+
+
+
+#dice{/* todo*/
+    position: absolute;
+    /* opacity: 0.8; */
+    /* border: black 0px solid; */
+    /* background-color: gray; */
+}
+#diceImg{
+    width: 40px;
+    /* box-shadow: 5px 5px gray ; */
+    border-radius: 5px;
+}
+
+
+
+
+
+
+/* ########################## custo animation ######################33 */
+@keyframes changeZoom{
+    from{
+        transform: scale(1);
+        
+    }
+    to{
+        transform: scale(1.25);
+        
+    }
+}
+
+
+
+.zoomer{
+    animation-duration: 0.5s;
+    animation-name: changeZoom;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+    z-index: 4;
+} 
+
+/* media query for mobile  */
+
+
+/* @media (max-width:479px){
+    #rg,#rb,#gy,#by,#rgby{
+        background-size: 27px;
+        padding: 0;
+        margin: 0;
+    }
+    
+    .cell{
+        width: 25px;
+        height: 25px;
+    }
+    .piece{
+        position: absolute;
+        top: 2.5px;
+        left: 2.5px;
+        width: 20px;
+        
+    }
+    #gp0{
+        top: 2.5px;
+        left: 2.5px;
+    }
+    .station{
+        background-size: 27px;
+    }
+    #r6{
+        background: red url("../images/station.png") no-repeat;
+        background-size: 27px;
+    }
+    #g6{
+        background: green url("../images/station.png") no-repeat;
+        background-size: 27px;
+    }
+    #b6{
+        background: blue url("../images/station.png") no-repeat;
+        background-size: 27px;
+    }
+    #y6{
+        background: yellow url("../images/station.png") no-repeat;
+        background-size: 27px;
+    }
+
+    
+} */
+
+
+@media (max-width:500px){
+    /* #rg,#rb,#gy,#by,#rgby{ */
+        #rg,#rb,#gy,#by{
+        background-size: 21px;
+        padding: 0;
+        margin: 0;
+    }
+    
+    .cell{
+        width: 21px;
+        height: 21px;
+    }
+    .piece{
+        position: absolute;
+        top: 2.5px;
+        left: 2.5px;
+        width: 15px;
+        
+    }
+    #gp0{
+        top: 2.5px;
+        left: 2.5px;
+    }
+    .station{
+        background-size: 22px;
+    }
+    #r6{
+        background: red url("../images/station.png") no-repeat;
+        background-size: 23px;
+    }
+    #g6{
+        background: green url("../images/station.png") no-repeat;
+        background-size: 23px;
+    }
+    #b6{
+        background: blue url("../images/station.png") no-repeat;
+        background-size: 23px;
+    }
+    #y6{
+        background: yellow url("../images/station.png") no-repeat;
+        background-size: 23px;
+    }
+
+    
+}
