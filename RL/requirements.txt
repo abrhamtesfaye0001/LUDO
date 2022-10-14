@@ -1,0 +1,6 @@
+ipython==8.7.0
+matplotlib==3.6.2
+numpy==1.23.5
+pygame==2.1.2
+termcolor==2.3.0
+torch==1.13.0
